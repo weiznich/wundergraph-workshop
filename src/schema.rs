@@ -1,4 +1,7 @@
 table! {
+    use diesel::sql_types::*;
+    use crate::model::posts::Post_state;
+
     comments (id) {
         id -> Int4,
         comment -> Nullable<Text>,
@@ -9,16 +12,23 @@ table! {
 }
 
 table! {
+    use diesel::sql_types::*;
+    use crate::model::posts::Post_state;
+
     posts (id) {
         id -> Int4,
         title -> Text,
         content -> Nullable<Text>,
         published_at -> Timestamptz,
         author -> Int4,
+        post_state -> Post_state,
     }
 }
 
 table! {
+    use diesel::sql_types::*;
+    use crate::model::posts::Post_state;
+
     users (id) {
         id -> Int4,
         name -> Text,

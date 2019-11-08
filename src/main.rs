@@ -7,6 +7,8 @@ use diesel::r2d2::{ConnectionManager, Pool};
 use structopt::StructOpt;
 
 mod model;
+mod pagination;
+#[allow(unused_imports)]
 mod schema;
 
 #[derive(Debug, StructOpt)]
