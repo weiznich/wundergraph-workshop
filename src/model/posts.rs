@@ -9,8 +9,10 @@ use diesel::pg::Pg;
 use diesel::prelude::*;
 use diesel::serialize::{self, ToSql};
 use failure::Error;
+use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 use std::io::Write;
+use wundergraph::query_builder::types::WundergraphValue;
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -41,17 +43,17 @@ pub struct Post {
     post_state: PostState,
 }
 
-#[derive(Deserialize, Debug, AsChangeset)]
+#[derive(Deserialize, Debug, AsChangeset, GraphQLInputObject)]
 #[table_name = "posts"]
-struct PostChangeset {
+pub struct PostChangeset {
     title: Option<String>,
     content: Option<Option<String>>,
     author: Option<i32>,
 }
 
-#[derive(Deserialize, Insertable, Debug)]
+#[derive(Deserialize, Insertable, Debug, GraphQLInputObject)]
 #[table_name = "posts"]
-struct NewPost {
+pub struct NewPost {
     title: String,
     content: Option<String>,
     author: i32,
@@ -62,7 +64,17 @@ struct NewPost {
 #[postgres(type_name = "post_state")]
 pub struct Post_state;
 
-#[derive(Debug, FromSqlRow, AsExpression, Deserialize, Serialize)]
+#[derive(
+    Debug,
+    FromSqlRow,
+    AsExpression,
+    Deserialize,
+    Serialize,
+    GraphQLEnum,
+    WundergraphValue,
+    Clone,
+    Copy,
+)]
 #[sql_type = "Post_state"]
 pub enum PostState {
     Draft,

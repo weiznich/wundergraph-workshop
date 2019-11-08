@@ -6,6 +6,7 @@ use actix_web::web::{self, HttpRequest, Json};
 use chrono::{DateTime, Utc};
 use diesel::prelude::*;
 use failure::Error;
+use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 pub fn config(cfg: &mut web::ServiceConfig) {
@@ -27,21 +28,21 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 }
 
 #[derive(Serialize, Deserialize, Queryable, Debug)]
-struct User {
+pub struct User {
     id: i32,
     name: String,
     joined_at: DateTime<Utc>,
 }
 
-#[derive(Deserialize, Debug, Insertable)]
+#[derive(Deserialize, Debug, Insertable, GraphQLInputObject)]
 #[table_name = "users"]
-struct NewUser {
+pub struct NewUser {
     name: String,
 }
 
-#[derive(Deserialize, Debug, AsChangeset)]
+#[derive(Deserialize, Debug, AsChangeset, GraphQLInputObject)]
 #[table_name = "users"]
-struct UserChangeset {
+pub struct UserChangeset {
     name: Option<String>,
 }
 

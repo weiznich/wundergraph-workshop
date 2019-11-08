@@ -4,6 +4,7 @@ use actix_web::web::{self, HttpRequest, Json};
 use chrono::{DateTime, Utc};
 use diesel::prelude::*;
 use failure::Error;
+use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 pub fn config(cfg: &mut web::ServiceConfig) {
@@ -30,17 +31,17 @@ pub struct Comment {
     post: i32,
 }
 
-#[derive(Deserialize, Insertable, Debug)]
+#[derive(Deserialize, Insertable, Debug, GraphQLInputObject)]
 #[table_name = "comments"]
-struct NewComment {
+pub struct NewComment {
     comment: Option<String>,
     author: i32,
     post: i32,
 }
 
-#[derive(Deserialize, AsChangeset, Debug)]
+#[derive(Deserialize, AsChangeset, Debug, GraphQLInputObject)]
 #[table_name = "comments"]
-struct CommentChangeset {
+pub struct CommentChangeset {
     comment: Option<Option<String>>,
     author: Option<i32>,
     post: Option<i32>,
