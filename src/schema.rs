@@ -22,6 +22,8 @@ table! {
         published_at -> Timestamptz,
         author -> Int4,
         post_state -> Post_state,
+        version_start -> Int4,
+        version_end -> Nullable<Int4>,
     }
 }
 
@@ -36,7 +38,6 @@ table! {
     }
 }
 
-joinable!(comments -> posts (post));
 joinable!(comments -> users (author));
 joinable!(posts -> users (author));
 

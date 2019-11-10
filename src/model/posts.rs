@@ -41,6 +41,8 @@ pub struct Post {
     published_at: DateTime<Utc>,
     author: i32,
     post_state: PostState,
+    version_start: i32,
+    version_end: Option<i32>,
 }
 
 #[derive(Deserialize, Debug, AsChangeset, GraphQLInputObject)]
